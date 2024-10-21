@@ -2,13 +2,13 @@
   gather_facts: no
 
   tasks:
-    - name: Install ansible-galaxy requirements
-      ansible.builtin.command: ansible-galaxy collection install -r ./collections/requirements.yml
-
     - name: Install Docker
-      community.general.package:
-        name: docker-ce
-        state: present
+      ansible.builtin.command: |
+        if ! command -v docker &> /dev/null; then
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+        fi
+
     - name: Start Docker
       service:
         name: docker
