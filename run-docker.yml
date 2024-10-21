@@ -1,0 +1,19 @@
+- hosts: all
+  gather_facts: no
+  # vars:
+    # ansible_python_interpreter: /Users/home/anaconda3/bin/python # Change this to your desired Python interpreter path
+
+
+  tasks:
+    - name: Pull hello-world image
+      docker_image:
+        name: hello-world
+        source: pull
+
+    - name: Run hello-world container and display output
+      command: docker run --rm hello-world
+      register: hello_world_output
+
+    - name: Display hello-world output
+      debug:
+        var: hello_world_output.stdout
