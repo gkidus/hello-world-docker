@@ -2,6 +2,16 @@
   gather_facts: no
 
   tasks:
+    - name: Install Docker
+      community.general.package:
+        name: docker-ce
+        state: present
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
     - name: Pull hello-world image
       community.docker.docker_image:
         name: hello-world
