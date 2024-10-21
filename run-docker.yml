@@ -1,12 +1,9 @@
 - hosts: all
   gather_facts: no
-  # vars:
-    # ansible_python_interpreter: /Users/home/anaconda3/bin/python # Change this to your desired Python interpreter path
-
 
   tasks:
     - name: Pull hello-world image
-      docker_image:
+      community.docker.docker_image:
         name: hello-world
         source: pull
 
