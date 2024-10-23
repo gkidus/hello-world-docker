@@ -1,6 +1,5 @@
 - hosts: all
   gather_facts: no
-  become: true
 
   tasks:
     - name: Update yum packages
