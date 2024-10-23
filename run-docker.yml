@@ -3,24 +3,31 @@
 
   tasks:
     - name: Install Docker
-      community.general.package:
-        name: docker-ce
-        state: present
+      ansible.builtin.shell: |
+        if ! command -v docker &> /dev/null; then
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+        fi
+      become: yes
+
     - name: Start Docker
-      service:
+      ansible.builtin.service:
         name: docker
         state: started
         enabled: yes
+      become: yes
 
     - name: Pull hello-world image
       community.docker.docker_image:
         name: hello-world
         source: pull
+      become: yes
 
     - name: Run hello-world container and display output
-      command: docker run --rm hello-world
+      ansible.builtin.shell: docker run --rm hello-world
       register: hello_world_output
+      become: yes
 
     - name: Display hello-world output
-      debug:
+      ansible.builtin.debug:
         var: hello_world_output.stdout
