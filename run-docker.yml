@@ -3,12 +3,6 @@
   become: yes
 
   tasks:
-    - name: Update yum packages
-      yum:
-        name: '*'
-        state: latest
-        use_backend: yum
-
     - name: Install required packages
       yum:
         name:
