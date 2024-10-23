@@ -7,6 +7,7 @@
       dnf:
         name: '*'
         state: latest
+        use_backend: dnf
 
     - name: Install required packages
       dnf:
@@ -15,11 +16,13 @@
           - device-mapper-persistent-data
           - lvm2
         state: present
+        use_backend: dnf
 
     - name: Set up the Docker stable repository
       dnf:
         name: dnf-plugins-core
         state: present
+        use_backend: dnf
 
     - name: Add Docker repository
       ansible.builtin.command: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -28,6 +31,7 @@
       dnf:
         name: docker-ce
         state: present
+        use_backend: dnf
 
     - name: Start Docker
       service:
