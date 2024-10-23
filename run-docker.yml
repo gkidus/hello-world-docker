@@ -1,36 +1,19 @@
 - hosts: all
   gather_facts: no
   become: true
-  become_method: sudo
 
   tasks:
     - name: Update yum packages
-      yum:
-        name: '*'
-        state: latest
-        use_backend: yum
+      command: yum update -y
 
     - name: Install required packages
-      yum:
-        name:
-          - yum-utils
-        state: present
-        use_backend: yum
+      command: yum install -y yum-utils device-mapper-persistent-data lvm2
 
     - name: Set up the Docker stable repository
-      yum_repository:
-        name: docker-ce
-        description: Docker CE Stable - $basearch
-        baseurl: https://download.docker.com/linux/centos/docker-ce.repo
-        gpgcheck: yes
-        enabled: yes
-        gpgkey: https://download.docker.com/linux/centos/gpg
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
     - name: Install Docker
-      yum:
-        name: docker-ce
-        state: present
-        use_backend: yum
+      command: yum install -y docker-ce docker-ce-cli containerd.io
 
     - name: Start Docker
       service:
