@@ -3,13 +3,6 @@
   become: yes
 
   tasks:
-    - name: Install required packages
-      yum:
-        name:
-          - yum-utils
-        state: present
-        use_backend: yum
-
     - name: Set up the Docker stable repository
       yum_repository:
         name: docker-ce
