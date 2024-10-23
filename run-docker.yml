@@ -1,38 +1,37 @@
 - hosts: all
   gather_facts: no
   become: yes
+  become_user: ec2-user
   become_method: sudo
 
   tasks:
-    - name: Update dnf packages
-      dnf:
+    - name: Update yum packages
+      yum:
         name: '*'
         state: latest
-        use_backend: dnf
+        use_backend: yum
 
     - name: Install required packages
-      dnf:
+      yum:
         name:
-          - dnf-utils
-          - device-mapper-persistent-data
-          - lvm2
+          - yum-utils
         state: present
-        use_backend: dnf
+        use_backend: yum
 
     - name: Set up the Docker stable repository
-      dnf:
-        name: dnf-plugins-core
-        state: present
-        use_backend: dnf
-
-    - name: Add Docker repository
-      ansible.builtin.command: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      yum_repository:
+        name: docker-ce
+        description: Docker CE Stable - $basearch
+        baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+        gpgcheck: yes
+        enabled: yes
+        gpgkey: https://download.docker.com/linux/centos/gpg
 
     - name: Install Docker
-      dnf:
+      yum:
         name: docker-ce
         state: present
-        use_backend: dnf
+        use_backend: yum
 
     - name: Start Docker
       service:
