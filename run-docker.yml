@@ -1,5 +1,6 @@
 - hosts: all
   gather_facts: no
+  become: yes
 
   tasks:
     - name: Install required packages
@@ -9,6 +10,7 @@
           - device-mapper-persistent-data
           - lvm2
         state: present
+        use_backend: yum
 
     - name: Add Docker repository
       yum_repository:
@@ -23,6 +25,8 @@
       yum:
         name: docker-ce
         state: present
+        use_backend: yum
+
     - name: Start Docker
       service:
         name: docker
